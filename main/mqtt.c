@@ -31,7 +31,7 @@
 
 RTC_DATA_ATTR int tag = 0;
 
-extern xSemaphoreHandle conexaoMQTTSemaphore;
+extern xSemaphoreHandle mqtt_semaphore;
 esp_mqtt_client_handle_t client;
 int state = 0;
 
@@ -112,11 +112,11 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
             } else {
                 if (tag > 0) {
                 sprintf(init_topic, "fse2020/180033646/%s/estado", room);
-                mqtt_envia_mensagem(init_topic, "{\"input\": 1}");
+                mqtt_send_message(init_topic, "{\"input\": 0}");
                 }
+                tag++;
                 esp_deep_sleep_start();
             }
-            tag++;
             break;
         case MQTT_EVENT_DISCONNECTED:
             ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
@@ -140,6 +140,7 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
             room[length] = '\0';
             write_nvs();
             cJSON_Delete(json);
+            tag++;
             esp_deep_sleep_start();
             break;
         case MQTT_EVENT_ERROR:
@@ -167,8 +168,8 @@ void mqtt_start()
     esp_mqtt_client_start(client);
 }
 
-void mqtt_envia_mensagem(char * topico, char * mensagem)
+void mqtt_send_message(char * topic, char * message)
 {
-    int message_id = esp_mqtt_client_publish(client, topico, mensagem, 0, 1, 0);
-    ESP_LOGI(TAG, "Mesnagem enviada, ID: %d", message_id);
+    int message_id = esp_mqtt_client_publish(client, topic, message, 0, 1, 0);
+    ESP_LOGI(TAG, "Mensagem enviada, ID: %d", message_id);
 }

@@ -5,6 +5,6 @@ char room[16];
 
 void mqtt_start();
 
-void mqtt_envia_mensagem(char * topico, char * mensagem);
+void mqtt_send_message(char * topic, char * message);
 
 #endif

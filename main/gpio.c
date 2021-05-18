@@ -8,7 +8,6 @@
 #include "gpio.h"
 #include "mqtt.h"
 #include "esp_sleep.h"
-//#include <string.h>
 
 
 void set_up_gpio() {

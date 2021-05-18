@@ -15,13 +15,13 @@
 #include "mqtt.h"
 #include "gpio.h"
 
-xSemaphoreHandle conexaoWifiSemaphore;
+xSemaphoreHandle wifi_semaphore;
 
-void conectadoWifi(void * params)
+void mqtt_conection(void * params)
 {
   while(true)
   {
-    if(xSemaphoreTake(conexaoWifiSemaphore, portMAX_DELAY))
+    if(xSemaphoreTake(wifi_semaphore, portMAX_DELAY))
     {
       mqtt_start();
     }
@@ -30,7 +30,6 @@ void conectadoWifi(void * params)
 
 void app_main(void)
 {
-    // Inicializa o NVS
     esp_err_t ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
       ESP_ERROR_CHECK(nvs_flash_erase());
@@ -38,9 +37,9 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
     
-    conexaoWifiSemaphore = xSemaphoreCreateBinary();
+    wifi_semaphore = xSemaphoreCreateBinary();
     set_up_gpio();
     wifi_start();
 
-    xTaskCreate(&conectadoWifi,  "Conexão ao MQTT", 4096, NULL, 1, NULL);
+    xTaskCreate(&mqtt_conection,  "Conexão ao MQTT", 4096, NULL, 1, NULL);
 }
