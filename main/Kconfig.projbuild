@@ -2,13 +2,13 @@ menu "Configuração do Wifi Configuration"
 
     config ESP_WIFI_SSID
         string "WiFi SSID"
-        default "GALAXIA 2G"
+        default "ssid"
         help
             Nome da rede Wifi.
 
     config ESP_WIFI_PASSWORD
         string "Senha do Wifi"
-        default "jupiterrs"
+        default "minha_senha"
         help
             Senha do WiFi (WPA or WPA2).
 
