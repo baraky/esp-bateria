@@ -107,12 +107,12 @@ static esp_err_t mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
                                                                                 derived_mac_addr[3],
                                                                                 derived_mac_addr[4],
                                                                                 derived_mac_addr[5]); 
-                esp_mqtt_client_publish(client, init_topic, "{\"init\": 1}", 0, 1, 0);
+                esp_mqtt_client_publish(client, init_topic, "{\"init\": 0}", 0, 1, 0);
                 esp_mqtt_client_subscribe(client, init_topic, 0);
             } else {
                 if (tag > 0) {
                 sprintf(init_topic, "fse2020/180033646/%s/estado", room);
-                mqtt_send_message(init_topic, "{\"input\": 0}");
+                mqtt_send_message(init_topic, "{\"input\": 1}");
                 }
                 tag++;
                 esp_deep_sleep_start();
